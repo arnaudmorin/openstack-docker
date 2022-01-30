@@ -6,6 +6,18 @@
             "dest": "/etc/keystone/keystone.conf",
             "owner": "keystone",
             "perm": "0600"
+        },
+        {
+            "source": "/data/0",
+            "dest": "/etc/keystone/fernet-keys/0",
+            "owner": "keystone",
+            "perm": "0600"
+        },
+        {
+            "source": "/data/1",
+            "dest": "/etc/keystone/fernet-keys/1",
+            "owner": "keystone",
+            "perm": "0600"
         }
     ]
 }
