@@ -1,4 +1,4 @@
-FROM arnaudmorin/openstack-base:victoria
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y install placement-api python3-pymysql
-CMD /usr/bin/uwsgi_python37 --http-socket :8778 --ini /etc/placement/placement-api-uwsgi.ini
-EXPOSE 8778
+FROM kolla/debian-source-placement-api:victoria
+MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
+COPY data/config.json /var/lib/kolla/config_files/config.json
+COPY data/placement-wsgi.conf /etc/apache2/conf-enabled/placement-wsgi.conf
