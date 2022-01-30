@@ -1,4 +1,4 @@
-FROM arnaudmorin/openstack-base:victoria
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y install neutron-api
-CMD /usr/bin/uwsgi_python37 --http-socket :9696 --ini /etc/neutron/neutron-api-uwsgi.ini
-EXPOSE 9696
+FROM kolla/debian-source-neutron-server:victoria
+MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
+COPY data/config.json /var/lib/kolla/config_files/config.json
+COPY data/neutron-wsgi.conf /etc/apache2/conf-enabled/neutron-wsgi.conf
