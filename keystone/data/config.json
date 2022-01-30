@@ -1,0 +1,11 @@
+{
+    "command": "keystone",
+    "config_files": [
+        {
+            "source": "/data/keystone.conf",
+            "dest": "/etc/keystone/keystone.conf",
+            "owner": "keystone",
+            "perm": "0600"
+        }
+    ]
+}

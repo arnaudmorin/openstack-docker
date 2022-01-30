@@ -1,4 +1,4 @@
-FROM arnaudmorin/openstack-base:victoria
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y install keystone sudo
-CMD sudo -u keystone /usr/bin/uwsgi_python37 --http-socket :5000 --ini /etc/keystone/keystone-uwsgi.ini
-EXPOSE 5000
+FROM kolla/debian-source-keystone:victoria
+MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
+COPY data/config.json /var/lib/kolla/config_files/config.json
+COPY data/keystone-wsgi.conf /etc/apache2/conf-enabled/keystone-wsgi.conf
