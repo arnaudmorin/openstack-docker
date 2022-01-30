@@ -1,4 +1,3 @@
-FROM arnaudmorin/openstack-base:victoria
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get -y install glance python-memcache
-CMD /usr/bin/uwsgi_python37 --http-socket :9292 --ini /etc/glance/glance-api-uwsgi.ini
-EXPOSE 9292
+FROM kolla/debian-source-glance-api:victoria
+MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
+COPY data/config.json /var/lib/kolla/config_files/config.json

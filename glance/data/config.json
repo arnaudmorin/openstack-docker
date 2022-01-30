@@ -1,0 +1,11 @@
+{
+    "command": "glance-api",
+    "config_files": [
+        {
+            "source": "/data/glance-api.conf",
+            "dest": "/etc/glance/glance-api.conf",
+            "owner": "glance",
+            "perm": "0600"
+        }
+    ]
+}
