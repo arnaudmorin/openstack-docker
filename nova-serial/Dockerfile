@@ -1,3 +1,3 @@
-FROM kolla/debian-source-nova-serialproxy:victoria
+FROM kolla/debian-source-nova-serialproxy:wallaby
 MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
 COPY data/config.json /var/lib/kolla/config_files/config.json
