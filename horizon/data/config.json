@@ -1,0 +1,12 @@
+{
+    "command": "/usr/sbin/apache2 -DFOREGROUND",
+    "config_files": [
+        {
+            "source": "/data/custom_local_settings",
+            "dest": "/etc/openstack-dashboard/custom_local_settings",
+            "owner": "horizon",
+            "perm": "0600"
+        }
+    ]
+}
+
