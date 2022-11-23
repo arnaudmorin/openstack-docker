@@ -6,6 +6,12 @@
             "dest": "/etc/glance/glance-api.conf",
             "owner": "glance",
             "perm": "0600"
+        },
+        {
+            "source": "/data/glance-image-import.conf",
+            "dest": "/etc/glance/glance-image-import.conf",
+            "owner": "glance",
+            "perm": "0600"
         }
     ]
 }
