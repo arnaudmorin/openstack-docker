@@ -1,0 +1,11 @@
+{
+    "command": "cinder-volume",
+    "config_files": [
+        {
+            "source": "/data/cinder.conf",
+            "dest": "/etc/cinder/cinder.conf",
+            "owner": "cinder",
+            "perm": "0600"
+        }
+    ]
+}
