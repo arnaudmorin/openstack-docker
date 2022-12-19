@@ -1,3 +1,2 @@
-FROM kolla/debian-source-glance-api:wallaby
+FROM kolla/debian-source-glance-base:yoga
 MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
-COPY data/config.json /var/lib/kolla/config_files/config.json
