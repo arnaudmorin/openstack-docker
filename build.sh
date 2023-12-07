@@ -2,7 +2,7 @@
 
 find * -maxdepth 0 -type d | while read folder ; do
     cd $folder
-    docker build -t arnaudmorin/openstack-${folder}:yoga .
-    docker push arnaudmorin/openstack-${folder}:yoga
+    sudo docker build -t arnaudmorin/openstack-${folder}:2023.2 .
+    sudo docker push arnaudmorin/openstack-${folder}:2023.2
     cd ..
 done
