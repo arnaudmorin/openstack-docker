@@ -1,17 +1,43 @@
-FROM 99cloud/skyline
-MAINTAINER Arnaud Morin "arnaud.morin@gmail.com"
-USER root
-RUN python -m pip install -c https://releases.openstack.org/constraints/upper/2024.2 --force-reinstall 'skyline-apiserver @ git+https://github.com/openstack/skyline-apiserver/@stable/2024.2' 
-RUN python -m pip install -c https://releases.openstack.org/constraints/upper/2024.2 --force-reinstall 'skyline-console @ git+https://github.com/openstack/skyline-console/@stable/2024.2'
-# Workarounds until my fix got merged upstream
-# See https://review.opendev.org/c/openstack/skyline-apiserver/+/902853
-# and https://review.opendev.org/c/openstack/skyline-apiserver/+/902417
-# and https://review.opendev.org/c/openstack/skyline-apiserver/+/902813
-#COPY data/patches /patches
-# Note that p1 is duplicate of p3 done by someone else, which is also valid
-#RUN cd /usr/local/lib/python3.8/dist-packages/ && patch -p1 < /patches/p1
-#RUN cd /usr/local/lib/python3.8/dist-packages/ && patch -p1 < /patches/p2
-#RUN cd /usr/local/lib/python3.8/dist-packages/ && patch -p1 < /patches/p3
-# As of 2024.2, let's try without any patch
+#
+# Builder
+#
+FROM debian:bookworm-slim
+LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
-COPY data/skyline.yaml /etc/skyline/skyline.yaml
+RUN apt-get update && apt-get install -y \
+    nginx vim python3 python3-venv python3-pip python3-dev git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create venv
+WORKDIR /opt/openstack/
+RUN python3 -m venv skyline && \
+    /opt/openstack/skyline/bin/pip install --upgrade pip setuptools
+
+# Install skyline-console
+RUN /opt/openstack/skyline/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt https://tarballs.opendev.org/openstack/skyline-console/skyline-console-stable-2025.1.tar.gz
+
+# Install skyline
+WORKDIR /src/skyline
+RUN git clone https://opendev.org/openstack/skyline-apiserver.git . -b stable/2025.1 && \
+    /opt/openstack/skyline/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt .
+
+RUN mkdir -p /etc/skyline /var/log/skyline /var/lib/skyline
+
+# Copy gunicorn config
+RUN cp /src/skyline/etc/gunicorn.py /etc/skyline/gunicorn.py
+# Fix from master to work with 2025.1
+RUN sed -i -r 's/reuse_port = True/reuse_port = False/' /etc/skyline/gunicorn.py
+
+# Install some extras stuff
+RUN /opt/openstack/skyline/bin/pip install PyMySQL -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt
+
+# Create a script for db-sync
+RUN echo "alembic -c /src/skyline_apiserver/db/alembic/alembic.ini upgrade head" > /usr/local/bin/skyline-db-sync
+RUN chmod +x /usr/local/bin/skyline-db-sync
+
+COPY skyline-start /usr/local/bin/skyline-start
+RUN chmod +x /usr/local/bin/skyline-start
+
+EXPOSE 8080
+
+CMD ["/usr/local/bin/skyline-start"]
