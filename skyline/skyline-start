@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -ex
+
+/opt/openstack/skyline/bin/skyline-nginx-generator --output-file /etc/nginx/nginx.conf --listen-address 0.0.0.0:8080
+
+nginx
+
+/opt/openstack/skyline/bin/gunicorn -c /etc/skyline/gunicorn.py skyline_apiserver.main:app
