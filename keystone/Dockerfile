@@ -32,6 +32,7 @@ LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
     python3 dumb-init libpython3.11 apache2 libapache2-mod-wsgi-py3 \
+    vim curl procps \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /etc/keystone

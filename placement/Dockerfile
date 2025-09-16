@@ -34,6 +34,7 @@ LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
     python3 dumb-init libpython3.11 \
+    vim curl procps \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/openstack/placement /opt/openstack/placement
