@@ -8,7 +8,7 @@ nova-manage cell_v2 map_cell0 || exit 1
 
 nova-manage cell_v2 list_cells | grep cell1 > /dev/null
 
-if ! [ $? ]; then
+if [ $? -ne 0 ]; then
     nova-manage cell_v2 create_cell --name=cell1 --verbose || exit 1
 fi
 
