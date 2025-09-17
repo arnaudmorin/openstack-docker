@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /etc/skyline /var/log/skyline /var/lib/skyline
 
 COPY --from=builder /opt/openstack/skyline /opt/openstack/skyline
-COPY --from=builder /src/skyline/skyline_apiserver/db /src/skyline_skyline_apiserver/db
+COPY --from=builder /src/skyline/skyline_apiserver/db /src/skyline/skyline_apiserver/db
 
 # Copy gunicorn config
 COPY --from=builder /src/skyline/etc/gunicorn.py /etc/skyline/gunicorn.py
