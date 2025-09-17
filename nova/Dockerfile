@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=builder /opt/openstack/nova /opt/openstack/nova
 COPY --from=builder /src/nova/etc/nova/api-paste.ini /etc/nova/api-paste.ini
-COPY data/init.sh /opt/openstack/bin/nova/init.sh
+COPY data/init.sh /opt/openstack/nova/bin/init.sh
 
 USER root
 #CMD [ "dumb-init", "--single-child", "--" , "/opt/openstack/neutron/bin/neutron-server"]
