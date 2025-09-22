@@ -19,7 +19,7 @@ RUN git clone https://opendev.org/openstack/cinder.git . -b stable/2025.1 && \
     /opt/openstack/cinder/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/cinder/bin/pip install PyMySQL -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt
+RUN /opt/openstack/cinder/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/cinder/bin/pip install uwsgi
