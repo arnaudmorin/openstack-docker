@@ -41,4 +41,4 @@ COPY --from=builder /opt/openstack/placement /opt/openstack/placement
 
 USER root
 # For dev purpose (api will have only one worker)
-CMD [ "dumb-init", "--single-child", "--" , "/opt/openstack/placement/bin/placement-api", "--port", "8778", "--host", "0.0.0.0" ]
+CMD [ "/opt/openstack/placement/bin/uwsgi", "--http", ":8778", "--wsgi-file", "/opt/openstack/placement/bin/placement-api" ]

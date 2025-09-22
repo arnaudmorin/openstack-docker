@@ -42,4 +42,4 @@ COPY --from=builder /opt/openstack/keystone /opt/openstack/keystone
 USER root
 
 EXPOSE 5000
-CMD [ "dumb-init", "--single-child", "--", "/opt/openstack/keystone/bin/keystone-wsgi-public", "--port", "5000", "--host", "0.0.0.0" ]
+CMD [ "/opt/openstack/keystone/bin/uwsgi", "--http", ":5000", "--wsgi-file", "/opt/openstack/keystone/bin/keystone-wsgi-public" ]
