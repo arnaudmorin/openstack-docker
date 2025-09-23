@@ -1,10 +1,14 @@
 #!/bin/bash
 
-find * -maxdepth 0 -type d | while read folder ; do
-    echo $folder
-done
-echo "Which the one to build and push locally? "
-read b
+if [ -z "$1" ] ; then
+    find * -maxdepth 0 -type d | while read folder ; do
+        echo $folder
+    done
+    echo "Which the one to build and push locally? "
+    read b
+else
+    b=$1
+fi
 pushd ${b}
 docker build . -t arnaudmorin/openstack-${b}:local
 popd
