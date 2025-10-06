@@ -1,7 +1,7 @@
 #
 # Builder
 #
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
@@ -27,11 +27,11 @@ RUN /opt/openstack/skyline/bin/pip install PyMySQL python-memcached -c https://o
 #
 # Runner
 #
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
-    python3 dumb-init libpython3.11 nginx \
+    python3 dumb-init libpython3.13 nginx \
     vim curl procps \
     && rm -rf /var/lib/apt/list/*
 

@@ -1,7 +1,7 @@
 #
 # Builder
 #
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
@@ -15,11 +15,11 @@ RUN python3 -m venv neutron && \
 
 # Install neutron
 WORKDIR /src/neutron
-RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2025.1 && \
-    /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2025.2 && \
+    /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt
+RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/neutron/bin/pip install uwsgi
@@ -27,11 +27,11 @@ RUN /opt/openstack/neutron/bin/pip install uwsgi
 #
 # Runner
 #
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
-    python3 dumb-init libpython3.11 \
+    python3 dumb-init libpython3.13 \
     vim curl procps \
     && rm -rf /var/lib/apt/lists/*
 
