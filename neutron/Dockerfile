@@ -24,6 +24,9 @@ RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached -c https://o
 # Install uwsgi
 RUN /opt/openstack/neutron/bin/pip install uwsgi
 
+# Install neutron-wireguard
+RUN /opt/openstack/neutron/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt git+https://github.com/arnaudmorin/neutron-wireguard
+
 #
 # Runner
 #
