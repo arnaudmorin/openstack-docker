@@ -15,16 +15,16 @@ RUN python3 -m venv mistral && \
 
 # Install mistral
 WORKDIR /src/mistral
-RUN git clone https://opendev.org/openstack/mistral.git . -b stable/2025.2 && \
-    /opt/openstack/mistral/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/mistral.git . -b stable/2026.1 && \
+    /opt/openstack/mistral/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install mistral-extra
 WORKDIR /src/mistral-extra/
-RUN git clone https://opendev.org/openstack/mistral-extra.git . -b stable/2025.2 && \
-    /opt/openstack/mistral/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/mistral-extra.git . -b stable/2026.1 && \
+    /opt/openstack/mistral/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/mistral/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt
+RUN /opt/openstack/mistral/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/mistral/bin/pip install uwsgi

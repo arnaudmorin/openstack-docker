@@ -15,17 +15,17 @@ RUN python3 -m venv neutron && \
 
 # Install neutron
 WORKDIR /src/neutron
-RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2025.2 && \
-    /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2026.1 && \
+    /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt
+RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/neutron/bin/pip install uwsgi
 
 # Install neutron-wireguard
-RUN /opt/openstack/neutron/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt git+https://github.com/arnaudmorin/neutron-wireguard
+RUN /opt/openstack/neutron/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt git+https://github.com/arnaudmorin/neutron-wireguard
 
 #
 # Runner
@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/openstack/neutron /opt/openstack/neutron
-COPY --from=builder /src/neutron/etc/api-paste.ini /etc/neutron/api-paste.ini
+COPY --from=builder /src/neutron/etc/neutron/api-paste.ini /etc/neutron/api-paste.ini
 
 USER root
 CMD [ "dumb-init", "--single-child", "--" , "/opt/openstack/neutron/bin/neutron-server"]

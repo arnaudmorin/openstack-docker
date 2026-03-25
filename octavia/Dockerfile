@@ -15,11 +15,11 @@ RUN python3 -m venv octavia && \
 
 # Install octavia
 WORKDIR /src/octavia
-RUN git clone https://opendev.org/openstack/octavia.git . -b stable/2025.2 && \
-    /opt/openstack/octavia/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/octavia.git . -b stable/2026.1 && \
+    /opt/openstack/octavia/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/octavia/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.2/upper-constraints.txt
+RUN /opt/openstack/octavia/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/octavia/bin/pip install uwsgi
