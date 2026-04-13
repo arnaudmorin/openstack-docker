@@ -14,15 +14,15 @@ RUN python3 -m venv skyline && \
     /opt/openstack/skyline/bin/pip install --upgrade pip setuptools
 
 # Install skyline-console
-RUN /opt/openstack/skyline/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt https://tarballs.opendev.org/openstack/skyline-console/skyline-console-stable-2025.1.tar.gz
+RUN /opt/openstack/skyline/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt https://tarballs.opendev.org/openstack/skyline-console/skyline-console-stable-2026.1.tar.gz
 
 # Install skyline
 WORKDIR /src/skyline
-RUN git clone https://opendev.org/openstack/skyline-apiserver.git . -b stable/2025.1 && \
-    /opt/openstack/skyline/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/skyline-apiserver.git . -b stable/2026.1 && \
+    /opt/openstack/skyline/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/skyline/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2025.1/upper-constraints.txt
+RUN /opt/openstack/skyline/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
 
 #
 # Runner
@@ -42,8 +42,6 @@ COPY --from=builder /src/skyline/skyline_apiserver/db /src/skyline/skyline_apise
 
 # Copy gunicorn config
 COPY --from=builder /src/skyline/etc/gunicorn.py /etc/skyline/gunicorn.py
-# Fix from master to work with 2025.1
-RUN sed -i -r 's/reuse_port = True/reuse_port = False/' /etc/skyline/gunicorn.py
 
 # Create a script for db-sync
 COPY skyline-db-sync /usr/local/bin/skyline-db-sync
