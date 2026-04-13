@@ -28,7 +28,7 @@ RUN /opt/openstack/neutron/bin/pip install uwsgi
 RUN /opt/openstack/neutron/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt git+https://github.com/arnaudmorin/neutron-wireguard
 
 # Custom oslo.messaging
-RUN /opt/openstack/neutron/bin/pip install it+https://github.com/arnaudmorin/oslo.messaging.git@master
+RUN /opt/openstack/neutron/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@master
 RUN /opt/openstack/neutron/bin/pip install blazingmq
 
 #
