@@ -19,7 +19,7 @@ RUN git clone https://opendev.org/openstack/keystone.git . -b stable/2026.1 && \
     /opt/openstack/keystone/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/keystone/bin/pip install PyMySQL python-memcached oslo.cache -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
+RUN /opt/openstack/keystone/bin/pip install PyMySQL python-memcached redis oslo.cache -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/keystone/bin/pip install uwsgi

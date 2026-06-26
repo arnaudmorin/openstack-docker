@@ -19,7 +19,7 @@ RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2026.1 && \
     /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
+RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached redis -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/neutron/bin/pip install uwsgi
