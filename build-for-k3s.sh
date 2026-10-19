@@ -10,9 +10,9 @@ else
     b=$1
 fi
 pushd ${b}
-docker build . -t arnaudmorin/openstack-${b}:local
+docker build . -t ghcr.io/arnaudmorin/openstack-${b}:local
 popd
-docker save arnaudmorin/openstack-${b}:local | k3s ctr images import -
+docker save ghcr.io/arnaudmorin/openstack-${b}:local | k3s ctr images import -
 
 echo
-echo "Image to use: arnaudmorin/openstack-${b}:local"
+echo "Image to use: ghcr.io/arnaudmorin/openstack-${b}:local"
