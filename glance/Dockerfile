@@ -15,8 +15,8 @@ RUN python3 -m venv glance && \
 
 # Install glance
 WORKDIR /src/glance
-RUN git clone https://opendev.org/openstack/glance.git . -b stable/2026.1 && \
-    /opt/openstack/glance/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/glance.git . -b stable/2026.2 && \
+    /opt/openstack/glance/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt .
 
 # Install some extras stuff
 RUN /opt/openstack/glance/bin/pip install \
@@ -24,7 +24,7 @@ RUN /opt/openstack/glance/bin/pip install \
     python-memcached \
     redis \
     boto3 \
-    -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
+    -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/glance/bin/pip install uwsgi

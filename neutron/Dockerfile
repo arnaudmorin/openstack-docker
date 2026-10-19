@@ -15,17 +15,17 @@ RUN python3 -m venv neutron && \
 
 # Install neutron
 WORKDIR /src/neutron
-RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2026.1 && \
-    /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt .
+RUN git clone https://opendev.org/openstack/neutron.git . -b stable/2026.2 && \
+    /opt/openstack/neutron/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt .
 
 # Install some extras stuff
-RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached redis -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt
+RUN /opt/openstack/neutron/bin/pip install PyMySQL python-memcached redis -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt
 
 # Install uwsgi
 RUN /opt/openstack/neutron/bin/pip install uwsgi
 
 # Install neutron-wireguard
-RUN /opt/openstack/neutron/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.1/upper-constraints.txt git+https://github.com/arnaudmorin/neutron-wireguard
+RUN /opt/openstack/neutron/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt git+https://github.com/arnaudmorin/neutron-wireguard
 
 # Custom oslo.messaging
 RUN /opt/openstack/neutron/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@master
