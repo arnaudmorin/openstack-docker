@@ -1,0 +1,22 @@
+name: Weekly rebuild
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      # Rebuild the latest release branch (e.g. 2026.2), so the images pick up
+      # upstream fixes even without changes in this repo
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          BRANCH=$(gh api "repos/$GH_REPO/branches" --paginate -q '.[].name' | grep -E '^20[0-9]{2}\.[0-9]$' | sort -V | tail -1)
+          echo "Rebuilding $BRANCH"
+          gh workflow run build.yml --ref "$BRANCH"
