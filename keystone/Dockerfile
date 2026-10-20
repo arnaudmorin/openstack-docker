@@ -13,6 +13,10 @@ WORKDIR /opt/openstack/
 RUN python3 -m venv keystone && \
     /opt/openstack/keystone/bin/pip install --upgrade pip setuptools
 
+# Hash of the upstream sources (see upstream-ref.sh), so the build cache
+# is invalidated as soon as upstream moves
+ARG UPSTREAM_REF
+
 # Install keystone
 WORKDIR /src/keystone
 RUN git clone https://opendev.org/openstack/keystone.git . -b stable/2026.2 && \

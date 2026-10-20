@@ -13,6 +13,10 @@ WORKDIR /opt/openstack/
 RUN python3 -m venv cinder && \
     /opt/openstack/cinder/bin/pip install --upgrade pip setuptools
 
+# Hash of the upstream sources (see upstream-ref.sh), so the build cache
+# is invalidated as soon as upstream moves
+ARG UPSTREAM_REF
+
 # Install cinder
 WORKDIR /src/cinder
 RUN git clone https://opendev.org/openstack/cinder.git . -b stable/2026.2 && \

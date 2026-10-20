@@ -13,6 +13,10 @@ WORKDIR /opt/openstack/
 RUN python3 -m venv glance && \
     /opt/openstack/glance/bin/pip install --upgrade pip setuptools
 
+# Hash of the upstream sources (see upstream-ref.sh), so the build cache
+# is invalidated as soon as upstream moves
+ARG UPSTREAM_REF
+
 # Install glance
 WORKDIR /src/glance
 RUN git clone https://opendev.org/openstack/glance.git . -b stable/2026.2 && \

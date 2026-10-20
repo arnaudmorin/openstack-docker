@@ -13,6 +13,10 @@ WORKDIR /opt/openstack/
 RUN python3 -m venv mistral && \
     /opt/openstack/mistral/bin/pip install --upgrade pip setuptools
 
+# Hash of the upstream sources (see upstream-ref.sh), so the build cache
+# is invalidated as soon as upstream moves
+ARG UPSTREAM_REF
+
 # Install mistral
 WORKDIR /src/mistral
 RUN git clone https://opendev.org/openstack/mistral.git . -b stable/2026.2 && \

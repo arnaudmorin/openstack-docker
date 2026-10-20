@@ -29,6 +29,9 @@ ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/opt/bb/lib64/pkgconfig
 # Download and build BlazingMQ dependencies (BDE, NTF)
 # Then download and build BlazingMQ from source
 ARG BMQ_VERSION=main
+# Hash of the upstream sources (see upstream-ref.sh), so the build cache
+# is invalidated as soon as upstream moves
+ARG UPSTREAM_REF
 RUN set -eux \
     && mkdir -p srcs bin \
     # -- fetch build_deps.sh and run it to build BDE + NTF --

@@ -18,13 +18,33 @@ jobs:
       images: ${{ steps.list.outputs.images }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # Same as build.sh: one image per folder
+      # Same as build.sh: one image per folder.
+      # Only the folders that changed are built, except that everything is built
+      # on manual runs, when the CI itself changed, or when the previous commit
+      # is unknown (new branch, force push)
       - id: list
-        run: echo "images=$(find * -maxdepth 0 -type d | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+        env:
+          BEFORE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          ALL=$(find * -maxdepth 0 -type d)
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              IMAGES=$ALL
+          else
+              CHANGED=$(git diff --name-only "$BEFORE" "$GITHUB_SHA")
+              if grep -qE '^(\.github/|upstream-ref\.sh$)' <<< "$CHANGED"; then
+                  IMAGES=$ALL
+              else
+                  IMAGES=$(grep -oE '^[^/]+/' <<< "$CHANGED" | tr -d / | sort -u | grep -Fx -f <(echo "$ALL") || true)
+              fi
+          fi
+          echo "images=$(jq -R 'select(length > 0)' <<< "$IMAGES" | jq -cs .)" >> "$GITHUB_OUTPUT"
 
   build:
     needs: list
+    if: needs.list.outputs.images != '[]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -51,6 +71,11 @@ jobs:
           fi
           echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
 
+      # Cache key for the upstream sources, see upstream-ref.sh
+      - name: Resolve upstream sources
+        id: upstream
+        run: echo "ref=$(./upstream-ref.sh ${{ matrix.image }})" >> "$GITHUB_OUTPUT"
+
       - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
@@ -65,6 +90,7 @@ jobs:
           context: ${{ matrix.image }}
           push: ${{ env.PUSH == 'true' }}
           tags: ${{ steps.tags.outputs.tags }}
+          build-args: UPSTREAM_REF=${{ steps.upstream.outputs.ref }}
           # Link the package to this repo on ghcr.io
           labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           cache-from: type=gha,scope=${{ matrix.image }}

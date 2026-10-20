@@ -13,6 +13,10 @@ WORKDIR /opt/openstack/
 RUN python3 -m venv skyline && \
     /opt/openstack/skyline/bin/pip install --upgrade pip setuptools
 
+# Hash of the upstream sources (see upstream-ref.sh), so the build cache
+# is invalidated as soon as upstream moves
+ARG UPSTREAM_REF
+
 # Install skyline-console
 RUN /opt/openstack/skyline/bin/pip install -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt https://tarballs.opendev.org/openstack/skyline-console/skyline-console-stable-2026.2.tar.gz
 
