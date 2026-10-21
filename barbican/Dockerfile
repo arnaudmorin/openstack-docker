@@ -29,7 +29,7 @@ RUN /opt/openstack/barbican/bin/pip install PyMySQL python-memcached redis -c ht
 RUN /opt/openstack/barbican/bin/pip install uwsgi
 
 # Custom oslo.messaging
-RUN /opt/openstack/barbican/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@master
+RUN /opt/openstack/barbican/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@stable/2026.2
 RUN /opt/openstack/barbican/bin/pip install blazingmq
 
 #

@@ -29,7 +29,7 @@ RUN /opt/openstack/nova/bin/pip install PyMySQL python-memcached redis -c https:
 RUN /opt/openstack/nova/bin/pip install uwsgi
 
 # Custom oslo.messaging
-RUN /opt/openstack/nova/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@master
+RUN /opt/openstack/nova/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@stable/2026.2
 RUN /opt/openstack/nova/bin/pip install blazingmq
 
 #
