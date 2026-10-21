@@ -32,7 +32,7 @@ RUN /opt/openstack/mistral/bin/pip install uwsgi
 RUN ln -s /opt/openstack/mistral/bin/mistral-server /usr/local/bin/
 
 # Custom oslo.messaging
-RUN /opt/openstack/mistral/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@master
+RUN /opt/openstack/mistral/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@stable/2026.1
 RUN /opt/openstack/mistral/bin/pip install blazingmq
 
 #
