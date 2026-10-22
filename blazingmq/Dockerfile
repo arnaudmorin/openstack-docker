@@ -28,14 +28,17 @@ ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/opt/bb/lib64/pkgconfig
 
 # Download and build BlazingMQ dependencies (BDE, NTF)
 # Then download and build BlazingMQ from source
-ARG BMQ_VERSION=main
+# NOTE(arnaud) TLS (bloomberg/blazingmq#1600) is not merged upstream yet: build
+# the tls branch of the fork (upstream main plus #1600)
+ARG BMQ_REPO=arnaudmorin/blazingmq
+ARG BMQ_VERSION=tls
 # Hash of the upstream sources (see upstream-ref.sh), so the build cache
 # is invalidated as soon as upstream moves
 ARG UPSTREAM_REF
 RUN set -eux \
     && mkdir -p srcs bin \
     # -- fetch build_deps.sh and run it to build BDE + NTF --
-    && curl -SL "https://github.com/bloomberg/blazingmq/archive/refs/heads/${BMQ_VERSION}.tar.gz" \
+    && curl -SL "https://github.com/${BMQ_REPO}/archive/refs/heads/${BMQ_VERSION}.tar.gz" \
        | tar -xzC srcs/ \
     && mv srcs/blazingmq-${BMQ_VERSION} srcs/bmq \
     && cp srcs/bmq/docker/build_deps.sh bin/build_deps.sh \
