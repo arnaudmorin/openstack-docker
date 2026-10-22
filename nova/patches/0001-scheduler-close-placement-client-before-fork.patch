@@ -1,0 +1,77 @@
+scheduler: close the placement client before forking workers
+
+The scheduler manager tests the placement client in the master process,
+which leaves keep-alive connections to placement open. oslo.service then
+forks the workers, which all inherit the same sockets: concurrent
+allocation candidate requests are interleaved on them, the workers read
+each other's responses (JSONDecodeError, "Placement API service is not
+responding", 180s timeouts) and builds fail with NoValidHost, until the
+connections are closed for being idle.
+
+Upstream: not merged yet, bug report pending.
+
+diff --git i/nova/cmd/scheduler.py w/nova/cmd/scheduler.py
+index e6abb6d6ff..65612ad07a 100644
+--- i/nova/cmd/scheduler.py
++++ w/nova/cmd/scheduler.py
+@@ -29,6 +29,7 @@ from oslo_reports import opts as gmr_opts
+ import nova.conf
+ from nova import config
+ from nova import objects
++from nova.scheduler.client import report
+ from nova.scheduler import rpcapi
+ from nova import service
+ from nova import thread_pool_factory
+@@ -61,6 +62,11 @@ def main():
+     # state (i.e. number of workers idle in the pool). A long term solution
+     # would be to use os.spawn instead of os.fork for the workers.
+     thread_pool_factory.reset_all_executors()
++    # The scheduler manager tests the placement client during its
++    # initialization, which leaves keep-alive connections to placement open
++    # in the master process. Close them before forking, otherwise all the
++    # workers share the same sockets and read each other's responses.
++    report.reset_report_client_singleton()
+ 
+     service.serve(server, workers=workers)
+     service.wait()
+diff --git i/nova/scheduler/client/report.py w/nova/scheduler/client/report.py
+index d49f56e663..d82e6ca057 100644
+--- i/nova/scheduler/client/report.py
++++ w/nova/scheduler/client/report.py
+@@ -112,6 +112,22 @@ def report_client_singleton():
+     return PLACEMENTCLIENT
+ 
+ 
++def reset_report_client_singleton():
++    """Close and forget the global placement client singleton.
++
++    The client keeps a pool of keep-alive HTTP connections to placement.
++    A process that uses the client and then forks worker processes must
++    call this before forking: otherwise every worker inherits the same
++    sockets, concurrent requests from different workers are interleaved
++    on them and the workers read each other's responses. Each worker
++    creates its own client on first use after this.
++    """
++    global PLACEMENTCLIENT
++    if PLACEMENTCLIENT is not None:
++        PLACEMENTCLIENT.close()
++        PLACEMENTCLIENT = None
++
++
+ def safe_connect(f):
+     @functools.wraps(f)
+     def wrapper(self, *a, **k):
+@@ -272,6 +288,13 @@ class SchedulerReportClient(object):
+         for uuid in uuids:
+             self._association_refresh_time.pop(uuid, None)
+ 
++    def close(self):
++        """Close the pooled HTTP connections to the placement service."""
++        # self._client is a keystoneauth1 Adapter: its session is the
++        # keystoneauth1 Session, which wraps the requests.Session that owns
++        # the connection pool.
++        self._client.session.session.close()
++
+     def _create_client(self):
+         """Create the HTTP session accessing the placement service."""
+         # Flush provider tree and associations so we start from a clean slate.

@@ -18,8 +18,11 @@ RUN python3 -m venv nova && \
 ARG UPSTREAM_REF
 
 # Install nova
+# NOTE(arnaud) patches/ holds fixes not merged upstream yet, see the header of each patch
 WORKDIR /src/nova
+COPY patches /patches
 RUN git clone https://opendev.org/openstack/nova.git . -b stable/2026.2 && \
+    git apply -v /patches/*.patch && \
     /opt/openstack/nova/bin/pip install -r requirements.txt -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt .
 
 # Install some extras stuff
