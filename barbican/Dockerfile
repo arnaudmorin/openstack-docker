@@ -31,7 +31,7 @@ RUN /opt/openstack/barbican/bin/pip install uwsgi
 # Custom oslo.messaging
 RUN /opt/openstack/barbican/bin/pip install git+https://github.com/arnaudmorin/oslo.messaging.git@stable/2026.2
 # NOTE(arnaud) BlazingMQ SDK with authentication and TLS, from the fork until it is released upstream
-RUN /opt/openstack/barbican/bin/pip install https://github.com/arnaudmorin/blazingmq-sdk-python/releases/download/v1.2.3-secure.e307e1a/blazingmq-1.2.3-cp313-cp313-manylinux_2_28_x86_64.whl
+RUN /opt/openstack/barbican/bin/pip install https://github.com/arnaudmorin/blazingmq-sdk-python/releases/download/v1.2.3-secure.cdec8fc/blazingmq-1.2.3-cp313-cp313-manylinux_2_28_x86_64.whl
 
 #
 # Runner
