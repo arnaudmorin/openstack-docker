@@ -8,7 +8,9 @@ each other's responses (JSONDecodeError, "Placement API service is not
 responding", 180s timeouts) and builds fail with NoValidHost, until the
 connections are closed for being idle.
 
-Upstream: not merged yet, bug report pending.
+Upstream: not merged yet.
+Bug: https://bugs.launchpad.net/nova/+bug/2171966
+Review: https://review.opendev.org/c/openstack/nova/+/1011901
 
 diff --git i/nova/cmd/scheduler.py w/nova/cmd/scheduler.py
 index e6abb6d6ff..65612ad07a 100644
