@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     python3 python3-venv python3-pip python3-dev git \
     && rm -rf /var/lib/apt/lists/*
 
+RUN git config --global user.email "arnaud.morin@gmail.com" && git config --global user.name "Arnaud M."
+
 # Create venv
 WORKDIR /opt/openstack/
 RUN python3 -m venv barbican && \

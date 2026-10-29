@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
+RUN git config --global user.email "arnaud.morin@gmail.com" && git config --global user.name "Arnaud M."
+
 WORKDIR /workspace
 
 ENV PATH=${PATH}:/workspace/srcs/bde-tools/bin
