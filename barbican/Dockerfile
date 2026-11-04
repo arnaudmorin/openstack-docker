@@ -5,7 +5,7 @@ FROM debian:trixie-slim AS builder
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
-    python3 python3-venv python3-pip python3-dev git \
+    python3 python3-venv python3-pip python3-dev git libpcre2-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git config --global user.email "arnaud.morin@gmail.com" && git config --global user.name "Arnaud M."
@@ -27,7 +27,7 @@ RUN git clone https://opendev.org/openstack/barbican.git . -b stable/2026.2 && \
 # Install some extras stuff
 RUN /opt/openstack/barbican/bin/pip install PyMySQL python-memcached redis -c https://opendev.org/openstack/requirements/raw/branch/stable/2026.2/upper-constraints.txt
 
-# Install uwsgi
+# Install uwsgi, with internal routing support from libpcre2-dev
 RUN /opt/openstack/barbican/bin/pip install uwsgi
 
 # Custom oslo.messaging
@@ -42,7 +42,7 @@ FROM debian:trixie-slim
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
-    python3 dumb-init libpython3.13 sudo qemu-utils nfs-common \
+    python3 dumb-init libpython3.13 libpcre2-8-0 sudo qemu-utils nfs-common \
     vim curl procps \
     && rm -rf /var/lib/apt/lists/*
 
