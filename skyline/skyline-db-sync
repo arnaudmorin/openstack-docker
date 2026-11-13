@@ -1,0 +1,2 @@
+#!/bin/bash
+/opt/openstack/skyline/bin/alembic -c /src/skyline/skyline_apiserver/db/alembic/alembic.ini upgrade head

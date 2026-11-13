@@ -1,0 +1,30 @@
+server {
+    listen ${CF_PORT};
+    server_name ${CF_SERVER_NAME};
+
+    # Redirect the /api/... requests to Mistral
+    #
+    location ~* ^/api {
+        set_by_lua_file $auth_token /etc/nginx/auth.lua;
+        proxy_set_header X-Auth-Token $auth_token;
+        proxy_set_header Accept 'application/json';
+        rewrite ^/api/(.*) /v2/$1 break;
+        proxy_pass ${CF_MISTRAL_URL};
+    }
+
+    # Serve all other requests as static files
+    # On 404, return index.html
+    #
+    location / {
+        root   /opt/CloudFlow/dist;
+        index  index.html;
+        try_files $uri /index.html;
+    }
+
+    # gzip configuration
+    #
+    gzip on;
+    gzip_min_length 256;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml
+                application/xml+rss text/javascript application/x-font-ttf font/opentype image/svg+xml image/x-ico;
+}

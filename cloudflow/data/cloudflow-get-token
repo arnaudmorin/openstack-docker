@@ -1,0 +1,23 @@
+#!/bin/bash
+# Generate openstack token
+# @authors Arnaud Morin <arnaud.morin@gmail.com>
+
+source /etc/openrc
+
+# Get token from cache first if possible
+if [ ! -e /tmp/os-token-cached ] ; then
+    /opt/oscli/bin/openstack token issue -f shell -c id -c expires > /tmp/os-token-cached
+fi
+
+eval $(cat /tmp/os-token-cached)
+
+now=$(date +%s)
+t_expires=$(($(date -d "$expires" +%s) - 60))
+
+# If our token is almost expired - renew it
+if [ $now -ge $t_expires ]; then
+    /opt/oscli/bin/openstack token issue -f shell -c id -c expires > /tmp/os-token-cached
+    eval $(cat /tmp/os-token-cached)
+fi
+
+echo $id
