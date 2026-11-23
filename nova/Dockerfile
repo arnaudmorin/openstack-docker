@@ -44,9 +44,11 @@ RUN /opt/openstack/nova/bin/pip install https://github.com/arnaudmorin/blazingmq
 FROM debian:trixie-slim
 LABEL maintainer="Arnaud Morin <arnaud.morin@gmail.com>"
 
+# NOTE(aruan) genisoimage builds the config drives of nova-compute with the ironic driver
 RUN apt-get update && apt-get install -y \
     python3 dumb-init libpython3.13 libpcre2-8-0 \
     novnc spice-html5 websockify \
+    genisoimage \
     vim curl procps \
     && rm -rf /var/lib/apt/lists/*
 
